@@ -1,10 +1,10 @@
 # dsh-client-ui-mobile
 
-![CI](https://github.com/raomaiping-hash/dsh-client-ui-mobile/actions/workflows/ci.yml/badge.svg)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
-![version](https://img.shields.io/badge/version-0.1.0-green.svg)
-
 [English](README.md) | 中文
+
+[![CI](https://github.com/raomaiping-hash/dsh-client-ui-mobile/actions/workflows/ci.yml/badge.svg)](https://github.com/raomaiping-hash/dsh-client-ui-mobile/actions/workflows/ci.yml)
+[![version](https://img.shields.io/github/v/tag/raomaiping-hash/dsh-client-ui-mobile)](https://github.com/raomaiping-hash/dsh-client-ui-mobile/tags)
+[![license](https://img.shields.io/github/license/raomaiping-hash/dsh-client-ui-mobile)](LICENSE)
 
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI 的移动端 / 小平板 UI 优化器。
 
