@@ -1,5 +1,7 @@
 # Contributing
 
+English | [中文](CONTRIBUTING.zh.md)
+
 Thanks for considering a contribution! This is a small, client-only UI plugin, so the bar for clarity and no-side-effects is high.
 
 ## Ground rules
