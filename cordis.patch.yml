@@ -1,0 +1,6 @@
+# dsh-client-ui-mobile bundle patch: register the plugin row.
+# Users may override the row's config in their own profile
+# cordis.patch.yml (later layers win per row).
+- insert:
+    - id: client-ui-mobile
+      name: dsh-client-ui-mobile
