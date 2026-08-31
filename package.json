@@ -1,6 +1,6 @@
 {
   "name": "dsh-client-ui-mobile",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Mobile / small-tablet UI optimizer for the DeepSeek Harness Web GUI: drawer sidebar, full-screen settings sheet with top tabs, bottom-sheet details panel, safe areas, and touch-friendly targets — all behind a max-width:820px breakpoint.",
   "type": "module",
   "main": "index.js",
@@ -35,19 +35,13 @@
     },
     "client": {
       "inject": [
-        "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-slots",
-        "@deepseek-ai/cordis-plugin-timer"
+        "@deepseek-ai/dsh-client-ui-layout"
       ],
       "platform": "web"
     }
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/dsh-client-runtime": "*",
-    "@deepseek-ai/dsh-client-ui-layout": "*",
-    "@deepseek-ai/dsh-client-ui-slots": "*"
+    "@deepseek-ai/cordis": "*"
   }
 }
