@@ -193,7 +193,7 @@ window.__ModuleLoader__.load({
       "  pointer-events: auto;",
       "  position: absolute;",
       "  top: calc(var(--dsh-mobi-fab-gap) + env(safe-area-inset-top, 0px));",
-      "  left: calc(var(--dsh-mobi-fab-gap) + env(safe-area-inset-left, 0px));",
+      "  right: calc(var(--dsh-mobi-fab-gap) + env(safe-area-inset-right, 0px));",
       "  width: var(--dsh-mobi-fab);",
       "  height: var(--dsh-mobi-fab);",
       "  border-radius: 14px;",
@@ -406,9 +406,12 @@ window.__ModuleLoader__.load({
           stroke: "currentColor",
           strokeWidth: 2,
           strokeLinecap: "round",
+          strokeLinejoin: "round",
           "aria-hidden": true,
         },
-        React.createElement("path", { d: "M4 7h16M4 12h16M4 17h16" }),
+        React.createElement("rect", { x: "3", y: "4", width: "7", height: "16", rx: "1.5" }),
+        React.createElement("path", { d: "M21 12h-9" }),
+        React.createElement("path", { d: "M16 8l-4 4 4 4" }),
       )
     }
 
