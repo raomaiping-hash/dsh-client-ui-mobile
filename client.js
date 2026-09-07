@@ -350,6 +350,32 @@ window.__ModuleLoader__.load({
       "    padding: 4px 12px !important;",
       "  }",
       "}",
+      "/* Top-bar menu button (header.utilities slot): same size as other header",
+      "   icons, in-flow so it never floats over or obscures them. Mobile only. */",
+      ".dsh-mobi-menu {",
+      "  display: none;",
+      "}",
+      "@media (max-width: 820px) {",
+      "  .dsh-mobi-menu {",
+      "    display: inline-flex;",
+      "    align-items: center;",
+      "    justify-content: center;",
+      "    width: 32px;",
+      "    height: 32px;",
+      "    padding: 0;",
+      "    border-radius: 8px;",
+      "    border: 1px solid var(--dsw-alias-border-l2, rgb(0 0 0 / 12%));",
+      "    background: transparent;",
+      "    color: var(--dsw-alias-label-primary, #111);",
+      "    cursor: pointer;",
+      "    -webkit-tap-highlight-color: transparent;",
+      "    touch-action: manipulation;",
+      "  }",
+      "  .dsh-mobi-menu:hover { background: color-mix(in srgb, var(--dsw-alias-bg-overlay, #fff) 70%, transparent); }",
+      "  .dsh-mobi-menu:active { transform: scale(0.96); }",
+      "  .dsh-mobi-menu:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary, #3964fe); outline-offset: 2px; }",
+      "  .dsh-mobi-menu svg { width: 18px; height: 18px; display: block; }",
+      "}",
     ].join("\n")
 
     var STYLE_ID = "dsh-client-ui-mobile/styles"
@@ -439,15 +465,6 @@ window.__ModuleLoader__.load({
         }
       }
 
-      function openDrawer() {
-        if (!layout || !isMobileViewport()) return
-        if (!isDrawerOpen()) {
-          try {
-            layout.toggleSidebar()
-          } catch (e) {}
-        }
-      }
-
       React.useEffect(
         function () {
           if (!bootstrapped.current) {
@@ -495,17 +512,6 @@ window.__ModuleLoader__.load({
           "aria-label": "关闭侧栏",
           onClick: closeDrawer,
         }),
-        React.createElement(
-          "button",
-          {
-            type: "button",
-            className: "dsh-mobi-fab",
-            "aria-label": "打开菜单",
-            title: "菜单",
-            onClick: openDrawer,
-          },
-          React.createElement(MenuIcon),
-        ),
       )
     }
 
@@ -536,6 +542,36 @@ window.__ModuleLoader__.load({
                 return ctx.timeout(fn, ms)
               },
             })
+          },
+        )
+      })
+
+      // 顶栏「展开侧边栏」菜单按钮：内嵌进 header.utilities（与其它插件图标并排），
+      // 不悬浮、不遮挡；仅移动端显示。点击打开左侧抽屉。
+      ctx.slots.inject("conversation.session.header.utilities", function () {
+        return ctx.slots.register(
+          {
+            name: "conversation.session.header.utilities",
+            id: "dsh-mobi-menu",
+            order: 90,
+            label: "Mobile UI",
+          },
+          function () {
+            return React.createElement(
+              "button",
+              {
+                type: "button",
+                className: "dsh-mobi-menu",
+                "aria-label": "展开侧边栏",
+                title: "展开侧边栏",
+                onClick: function () {
+                  try {
+                    if (!isDrawerOpen()) ctx.layout.toggleSidebar()
+                  } catch (e) {}
+                },
+              },
+              React.createElement(MenuIcon),
+            )
           },
         )
       })
