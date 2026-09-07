@@ -350,8 +350,8 @@ window.__ModuleLoader__.load({
       "    padding: 4px 12px !important;",
       "  }",
       "}",
-      "/* Top-bar menu button (header.utilities slot): same size as other header",
-      "   icons, in-flow so it never floats over or obscures them. Mobile only. */",
+      "/* Top-bar right-toolbar sidebar toggle (inserted next to the official",
+      "   refresh/upload buttons; in-flow, mobile-only). */",
       ".dsh-mobi-menu {",
       "  display: none;",
       "}",
@@ -360,8 +360,8 @@ window.__ModuleLoader__.load({
       "    display: inline-flex;",
       "    align-items: center;",
       "    justify-content: center;",
-      "    width: 32px;",
-      "    height: 32px;",
+      "    width: 28px;",
+      "    height: 28px;",
       "    padding: 0;",
       "    border-radius: 8px;",
       "    border: 1px solid var(--dsw-alias-border-l2, rgb(0 0 0 / 12%));",
@@ -374,7 +374,7 @@ window.__ModuleLoader__.load({
       "  .dsh-mobi-menu:hover { background: color-mix(in srgb, var(--dsw-alias-bg-overlay, #fff) 70%, transparent); }",
       "  .dsh-mobi-menu:active { transform: scale(0.96); }",
       "  .dsh-mobi-menu:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary, #3964fe); outline-offset: 2px; }",
-      "  .dsh-mobi-menu svg { width: 18px; height: 18px; display: block; }",
+      "  .dsh-mobi-menu svg { width: 17px; height: 17px; display: block; }",
       "}",
     ].join("\n")
 
@@ -528,9 +528,9 @@ window.__ModuleLoader__.load({
         )
       })
 
-      // 0.1.3 官方右上「展开侧边栏」按钮在窄屏（narrow）下点击不生效或打开的是右侧
-      // 详情列；而本插件抽屉是左侧 sidebar。移动端接管该按钮（跨页面、内嵌、不悬浮、
-      // 不遮挡其它图标），点击强制展开左侧抽屉。
+      // 官方顶栏的「展开侧边栏」需要先展开才能看到,不是常驻入口;本插件抽屉是
+      // 左侧 sidebar。因此向官方常驻的工具排(刷新/上传那排,首页与会话页都存在)
+      // 注入一个「展开侧边栏」按钮:内嵌、不悬浮、不遮挡其它图标,点击展开左抽屉。
       ctx.effect(function () {
         var doc = null
         try {
@@ -539,38 +539,44 @@ window.__ModuleLoader__.load({
           doc = null
         }
         if (!doc) return
-        var wired = false
-        function attach() {
-          var btn = doc.querySelector(
-            'button[aria-label="展开侧边栏"], button[aria-label="打开侧边栏"], button[aria-label="Open sidebar"]',
-          )
-          if (!btn || btn.getAttribute("data-dsh-mobi-wired")) return wired
-          btn.setAttribute("data-dsh-mobi-wired", "1")
-          btn.addEventListener(
-            "click",
-            function (ev) {
-              if (!isMobileViewport()) return
-              ev.preventDefault()
-              ev.stopImmediatePropagation()
-              ev.stopPropagation()
-              try {
-                if (!isDrawerOpen()) ctx.layout.toggleSidebar()
-              } catch (e) {}
-            },
-            true,
-          )
-          wired = true
+        var inserted = false
+        function anchor() {
+          return doc.querySelector('button[aria-label="刷新"], button[aria-label="Refresh"]')
+        }
+        function insert() {
+          if (inserted) return true
+          var a = anchor()
+          if (!a) return false
+          var host = a.parentElement
+          if (!host) return false
+          var btn = doc.createElement("button")
+          btn.type = "button"
+          btn.className = "dsh-mobi-menu"
+          btn.setAttribute("aria-label", "展开侧边栏")
+          btn.setAttribute("title", "展开侧边栏")
+          btn.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"></rect><path d="M21 12h-9"></path><path d="M16 8l-4 4 4 4"></path></svg>'
+          btn.addEventListener("click", function (ev) {
+            if (!isMobileViewport()) return
+            ev.preventDefault()
+            ev.stopPropagation()
+            try {
+              if (!isDrawerOpen()) ctx.layout.toggleSidebar()
+            } catch (e) {}
+          })
+          host.insertBefore(btn, a)
+          inserted = true
           return true
         }
-        if (attach()) return function () {}
+        if (insert()) return function () {}
         var mo = new MutationObserver(function () {
-          if (attach()) mo.disconnect()
+          if (insert()) mo.disconnect()
         })
         mo.observe(doc.body, { childList: true, subtree: true })
         return function () {
           mo.disconnect()
         }
-      }, "ui-mobile: wire official sidebar toggle")
+      }, "ui-mobile: add right-toolbar sidebar toggle")
 
       ctx.slots.inject("settings.general.item", function () {
         return ctx.slots.register(
