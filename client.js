@@ -423,24 +423,6 @@ window.__ModuleLoader__.load({
       return !el.hasAttribute("data-sidebar-collapsed")
     }
 
-    function MenuIcon() {
-      return React.createElement(
-        "svg",
-        {
-          viewBox: "0 0 24 24",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: 2,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          "aria-hidden": true,
-        },
-        React.createElement("rect", { x: "3", y: "4", width: "7", height: "16", rx: "1.5" }),
-        React.createElement("path", { d: "M21 12h-9" }),
-        React.createElement("path", { d: "M16 8l-4 4 4 4" }),
-      )
-    }
-
     function MobileChrome(props) {
       var layout = props.layout
       var timeout = props.timeout
@@ -542,36 +524,6 @@ window.__ModuleLoader__.load({
                 return ctx.timeout(fn, ms)
               },
             })
-          },
-        )
-      })
-
-      // 顶栏「展开侧边栏」菜单按钮：内嵌进 header.utilities（与其它插件图标并排），
-      // 不悬浮、不遮挡；仅移动端显示。点击打开左侧抽屉。
-      ctx.slots.inject("conversation.session.header.utilities", function () {
-        return ctx.slots.register(
-          {
-            name: "conversation.session.header.utilities",
-            id: "dsh-mobi-menu",
-            order: 90,
-            label: "Mobile UI",
-          },
-          function () {
-            return React.createElement(
-              "button",
-              {
-                type: "button",
-                className: "dsh-mobi-menu",
-                "aria-label": "展开侧边栏",
-                title: "展开侧边栏",
-                onClick: function () {
-                  try {
-                    if (!isDrawerOpen()) ctx.layout.toggleSidebar()
-                  } catch (e) {}
-                },
-              },
-              React.createElement(MenuIcon),
-            )
           },
         )
       })
