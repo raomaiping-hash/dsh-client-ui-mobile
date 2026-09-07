@@ -528,6 +528,50 @@ window.__ModuleLoader__.load({
         )
       })
 
+      // 0.1.3 官方右上「展开侧边栏」按钮在窄屏（narrow）下点击不生效或打开的是右侧
+      // 详情列；而本插件抽屉是左侧 sidebar。移动端接管该按钮（跨页面、内嵌、不悬浮、
+      // 不遮挡其它图标），点击强制展开左侧抽屉。
+      ctx.effect(function () {
+        var doc = null
+        try {
+          doc = globalThis.document
+        } catch (e) {
+          doc = null
+        }
+        if (!doc) return
+        var wired = false
+        function attach() {
+          var btn = doc.querySelector(
+            'button[aria-label="展开侧边栏"], button[aria-label="打开侧边栏"], button[aria-label="Open sidebar"]',
+          )
+          if (!btn || btn.getAttribute("data-dsh-mobi-wired")) return wired
+          btn.setAttribute("data-dsh-mobi-wired", "1")
+          btn.addEventListener(
+            "click",
+            function (ev) {
+              if (!isMobileViewport()) return
+              ev.preventDefault()
+              ev.stopImmediatePropagation()
+              ev.stopPropagation()
+              try {
+                if (!isDrawerOpen()) ctx.layout.toggleSidebar()
+              } catch (e) {}
+            },
+            true,
+          )
+          wired = true
+          return true
+        }
+        if (attach()) return function () {}
+        var mo = new MutationObserver(function () {
+          if (attach()) mo.disconnect()
+        })
+        mo.observe(doc.body, { childList: true, subtree: true })
+        return function () {
+          mo.disconnect()
+        }
+      }, "ui-mobile: wire official sidebar toggle")
+
       ctx.slots.inject("settings.general.item", function () {
         return ctx.slots.register(
           {
