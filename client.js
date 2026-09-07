@@ -198,7 +198,7 @@ window.__ModuleLoader__.load({
       "  height: var(--dsh-mobi-fab);",
       "  border-radius: 14px;",
       "  border: 1px solid var(--dsw-alias-border-l2, rgb(0 0 0 / 12%));",
-      "  background: color-mix(in srgb, var(--dsw-alias-bg-overlay, #fff) 92%, transparent);",
+      "  background: color-mix(in srgb, var(--dsw-alias-brand-primary, #3964fe) 8%, var(--dsw-alias-bg-overlay, #fff));",
       "  color: var(--dsw-alias-label-primary, #111);",
       "  box-shadow: 0 8px 24px rgb(0 0 0 / 16%);",
       "  align-items: center;",
@@ -397,6 +397,21 @@ window.__ModuleLoader__.load({
       return !el.hasAttribute("data-sidebar-collapsed")
     }
 
+    function MenuIcon() {
+      return React.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: 2,
+          strokeLinecap: "round",
+          "aria-hidden": true,
+        },
+        React.createElement("path", { d: "M4 7h16M4 12h16M4 17h16" }),
+      )
+    }
+
     function MobileChrome(props) {
       var layout = props.layout
       var timeout = props.timeout
@@ -477,6 +492,17 @@ window.__ModuleLoader__.load({
           "aria-label": "关闭侧栏",
           onClick: closeDrawer,
         }),
+        React.createElement(
+          "button",
+          {
+            type: "button",
+            className: "dsh-mobi-fab",
+            "aria-label": "打开菜单",
+            title: "菜单",
+            onClick: openDrawer,
+          },
+          React.createElement(MenuIcon),
+        ),
       )
     }
 

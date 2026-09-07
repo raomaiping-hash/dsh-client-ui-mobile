@@ -58,7 +58,7 @@ Then restart DSH.
 ## How it works
 
 - The host half (`index.js`) is an empty `apply()` — it only exists so the loader mounts the package.
-- The browser half (`client.js`) is loaded via `package.json`'s `dsh.client` (`exports["./client"]`). It injects one `<style>` tag and registers a `MobileChrome` component into the `shell.overlay` slot (backdrop; the sidebar is opened by the official top-bar ☰) and a small card into `settings.general.item` (an "installed" notice).
+- The browser half (`client.js`) is loaded via `package.json`'s `dsh.client` (`exports["./client"]`). It injects one `<style>` tag and registers a `MobileChrome` component into the `shell.overlay` slot (the FAB + backdrop) and a small card into `settings.general.item` (an "installed" notice).
 - Everything is scoped to `@media (max-width: 820px)`; the desktop layout is untouched.
 
 ## Threat model & scope

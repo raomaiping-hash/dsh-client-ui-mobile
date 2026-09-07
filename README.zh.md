@@ -12,7 +12,7 @@
 
 ## 功能
 
-- **抽屉式侧栏**——820px 以下侧栏变为左侧抽屉；由官方顶栏 ☰ 打开，遮罩（仅覆盖对话区）与 Esc 关闭，会话切换时自动收起。
+- **抽屉式侧栏**——820px 以下侧栏变为左侧抽屉；浮动菜单按钮打开，遮罩（仅覆盖对话区）与 Esc 关闭，会话切换时自动收起。
 - **全屏设置面板**——设置弹窗（桌面上是 188px 导航栏 + 内容）变为全屏面板：顶部标题 + 横向可滚动分区标签、绝对定位关闭按钮、安全区留白。
 - **设置入场动画**——遮罩淡入 + 面板上滑；受 `prefers-reduced-motion` 约束。
 - **详情面板底部抽屉**——工具调用详情列（小屏默认隐藏）变为从底部滑入的抽屉，由布局的 `data-details-collapsed` 状态驱动。
@@ -58,7 +58,7 @@ dsh plugin --profile web remove dsh-client-ui-mobile
 ## 工作原理
 
 - host 半部（`index.js`）是空的 `apply()`——只为让 loader 挂载本包。
-- 浏览器半部（`client.js`）通过 `package.json` 的 `dsh.client`（`exports["./client"]`）加载。它注入一个 `<style>` 标签，并把一个 `MobileChrome` 组件注册到 `shell.overlay` 插槽（遮罩；侧栏打开沿用官方顶栏 ☰），再把一张小卡片注册到 `settings.general.item`（"已安装"提示）。
+- 浏览器半部（`client.js`）通过 `package.json` 的 `dsh.client`（`exports["./client"]`）加载。它注入一个 `<style>` 标签，并把一个 `MobileChrome` 组件注册到 `shell.overlay` 插槽（FAB + 遮罩），再把一张小卡片注册到 `settings.general.item`（"已安装"提示）。
 - 全部规则限定在 `@media (max-width: 820px)`；桌面布局不受影响。
 
 ## 威胁模型与范围
