@@ -22,6 +22,13 @@ The stock Web shell is a three-column desktop layout. Under a phone-width viewpo
 
 > **Note on the details panel:** the stock harness does not yet wire an entry point that opens the details column (the upstream `openDetails` action is implemented but uncalled). The bottom-sheet CSS is correct and activates the moment an entry point exists; today it stays off-screen and harmless. The settings and drawer features are fully usable now.
 
+## Compatibility
+
+- Declared target: DSH `0.1.3-alpha.2` (`dshTarget` in `package.json`); previously declared `0.1.2-rc.1`.
+- The 0.1.2-rc.1 → 0.1.3-alpha.2 client API migration touched `connection` and `settings`; this plugin consumes neither. It only uses `ctx.slots`, `ctx.layout`, and the timer/effect verbs (`ctx.timeout`, `ctx.effect`), all verified present in the installed `0.1.3-alpha.2` runtime.
+- Selector audit against the installed `@deepseek-ai/dsh-client-ui-layout` and `@deepseek-ai/dsh-client-ui-settings-general` client bundles found every anchor this plugin relies on still present: `data-shell-overlay`, `data-sidebar-collapsed` / `data-details-collapsed`, the sidebar/center/details column order (grid children 1–3), `[data-cordis-panel]`, the settings sheet (`[role="dialog"][aria-modal="true"]:has(>nav)` plus `_nav*` / `_content` / `_header` / `_options` / `_close` CSS-module suffixes), the tool-row `inspectButton` local name, and the `--dsh-*` layout variables its rules override.
+- No code change was required for this release; the version bump is metadata-only. Visual behavior still needs a phone-width E2E pass on this exact version.
+
 ## Install
 
 Pure ESM, no build step, no install scripts — nothing executes at install time.
