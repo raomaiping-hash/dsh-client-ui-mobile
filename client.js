@@ -528,9 +528,8 @@ window.__ModuleLoader__.load({
         )
       })
 
-      // 官方顶栏的「展开侧边栏」需要先展开才能看到,不是常驻入口;本插件抽屉是
-      // 左侧 sidebar。因此向官方常驻的工具排(刷新/上传那排,首页与会话页都存在)
-      // 注入一个「展开侧边栏」按钮:内嵌、不悬浮、不遮挡其它图标,点击展开左抽屉。
+      // 「Session 日志」按钮右侧注入「展开侧边栏」按钮:内嵌同行、不悬浮、
+      // 不遮挡其它图标,点击展开左侧抽屉。
       ctx.effect(function () {
         var doc = null
         try {
@@ -541,14 +540,17 @@ window.__ModuleLoader__.load({
         if (!doc) return
         var inserted = false
         function anchor() {
-          return doc.querySelector('button[aria-label="刷新"], button[aria-label="Refresh"]')
+          var buttons = doc.querySelectorAll("button")
+          for (var i = 0; i < buttons.length; i++) {
+            var label = (buttons[i].getAttribute("aria-label") || "") + " " + (buttons[i].textContent || "")
+            if (/Session\s*日志|Session\s*log|会话日志/i.test(label)) return buttons[i]
+          }
+          return null
         }
         function insert() {
           if (inserted) return true
           var a = anchor()
           if (!a) return false
-          var host = a.parentElement
-          if (!host) return false
           var btn = doc.createElement("button")
           btn.type = "button"
           btn.className = "dsh-mobi-menu"
@@ -564,7 +566,7 @@ window.__ModuleLoader__.load({
               if (!isDrawerOpen()) ctx.layout.toggleSidebar()
             } catch (e) {}
           })
-          host.insertBefore(btn, a)
+          a.insertAdjacentElement("afterend", btn)
           inserted = true
           return true
         }
@@ -576,7 +578,7 @@ window.__ModuleLoader__.load({
         return function () {
           mo.disconnect()
         }
-      }, "ui-mobile: add right-toolbar sidebar toggle")
+      }, "ui-mobile: add sidebar toggle beside Session log")
 
       ctx.slots.inject("settings.general.item", function () {
         return ctx.slots.register(
