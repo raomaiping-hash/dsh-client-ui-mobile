@@ -225,6 +225,10 @@ window.__ModuleLoader__.load({
       "  [data-sidebar-collapsed] > [data-shell-overlay] .dsh-mobi-fab {",
       "    display: inline-flex;",
       "  }",
+      "  /* 会话页顶栏已有 .dsh-mobi-menu，FAB 让位以免遮住官方按钮。 */",
+      "  [data-sidebar-collapsed]:has(.dsh-mobi-menu) > [data-shell-overlay] .dsh-mobi-fab {",
+      "    display: none !important;",
+      "  }",
       "  *:not([data-sidebar-collapsed]) > [data-shell-overlay] .dsh-mobi-fab {",
       "    display: none !important;",
       "  }",
@@ -453,6 +457,18 @@ window.__ModuleLoader__.load({
         }
       }
 
+      // 首页没有 conversation header，也就没有「Session 日志」按钮可挂靠，
+      // 抽屉因此没有任何入口。FAB 由 CSS 控制：仅窄屏 + 侧栏折叠时显示，
+      // 且一旦顶栏出现了 .dsh-mobi-menu（会话页）就让位给它。
+      function openDrawer() {
+        if (!layout || !isMobileViewport()) return
+        if (!isDrawerOpen()) {
+          try {
+            layout.toggleSidebar()
+          } catch (e) {}
+        }
+      }
+
       React.useEffect(
         function () {
           if (!bootstrapped.current) {
@@ -494,6 +510,17 @@ window.__ModuleLoader__.load({
       return React.createElement(
         "div",
         { className: "dsh-mobi-root", "data-dsh-mobi": "chrome" },
+        React.createElement("button", {
+          type: "button",
+          className: "dsh-mobi-fab",
+          "aria-label": "打开侧边栏",
+          title: "打开侧边栏",
+          onClick: openDrawer,
+          dangerouslySetInnerHTML: {
+            __html:
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"></rect><path d="M21 12h-9"></path><path d="M16 8l-4 4 4 4"></path></svg>',
+          },
+        }),
         React.createElement("button", {
           type: "button",
           className: "dsh-mobi-backdrop",

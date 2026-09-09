@@ -12,7 +12,7 @@ The stock Web shell is a three-column desktop layout. Under a phone-width viewpo
 
 ## Features
 
-- **Drawer sidebar** — below 820&nbsp;px the sidebar becomes a left drawer; a floating menu button opens it, a backdrop (over the conversation only) and Esc close it, and it auto-closes on session switch.
+- **Drawer sidebar** — below 820&nbsp;px the sidebar becomes a left drawer. There are two entries: on session pages an in-flow "expand sidebar" button is injected next to the official top-bar "Session log" button (no overlay, no obstruction); on pages without a conversation header (the home screen) a floating action button (FAB) in the top-right corner takes over. The two are mutually exclusive — once the top-bar button exists, the FAB yields. A backdrop (over the conversation only) and Esc close it, and it auto-closes on session switch.
 - **Full-screen settings sheet** — the settings dialog (a 188&nbsp;px nav rail + content on desktop) becomes a full-screen sheet with a top title + horizontally scrollable section tabs, an absolute close button, and safe-area insets.
 - **Settings entrance animation** — mask fade + panel slide-up; gated by `prefers-reduced-motion`.
 - **Details panel as a bottom sheet** — the tool-call details column (hidden on small screens by default) becomes a slide-up bottom sheet driven by the layout's `data-details-collapsed` state.
@@ -58,7 +58,7 @@ Then restart DSH.
 ## How it works
 
 - The host half (`index.js`) is an empty `apply()` — it only exists so the loader mounts the package.
-- The browser half (`client.js`) is loaded via `package.json`'s `dsh.client` (`exports["./client"]`). It injects one `<style>` tag, registers a `MobileChrome` component into the `shell.overlay` slot (backdrop; the sidebar is opened by the official top-bar "expand sidebar" button), and a small card into `settings.general.item` (an "installed" notice).
+- The browser half (`client.js`) is loaded via `package.json`'s `dsh.client` (`exports["./client"]`). It injects one `<style>` tag, registers a `MobileChrome` component into the `shell.overlay` slot (floating entry + backdrop), and a small card into `settings.general.item` (an "installed" notice).
 - Everything is scoped to `@media (max-width: 820px)`; the desktop layout is untouched.
 
 ## Threat model & scope
