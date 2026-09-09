@@ -73,7 +73,13 @@ window.__ModuleLoader__.load({
       "  :has(> [data-shell-overlay])[data-sidebar-collapsed] > *:first-child * {",
       "    visibility: hidden !important;",
       "  }",
-      "  :has(> [data-shell-overlay]) > *:nth-child(2) {",
+      "  /* 0.1.5 的 AppFrame 直接子元素为 sidebar / center / rightbar / overlay：",
+      "     右栏由 [data-rightbar-col] 标记、由 [data-rightbar-collapsed] 记录折叠态，",
+      "     而 center 列只有 CSS module 类名（<hash>_centerCol）、没有 data 属性，",
+      "     所以用 [class*=\"_centerCol\"] 匹配（官方类名恒为 <hash>_centerCol）。",
+      "     旧的 *:nth-child(3) + data-details-collapsed 已随 details 列一并移除，",
+      "     继续用位置选择器会把官方右栏当成详情面板铺成底部白板挡住整页。 */",
+      "  :has(> [data-shell-overlay]) > [class*=\"_centerCol\"] {",
       "    min-width: 0 !important;",
       "    width: 100% !important;",
       "    max-width: 100% !important;",
@@ -81,7 +87,7 @@ window.__ModuleLoader__.load({
       "    padding-bottom: env(safe-area-inset-bottom, 0px);",
       "    scroll-padding-top: calc(var(--dsh-mobi-fab) + var(--dsh-mobi-fab-gap) + 8px);",
       "  }",
-      "  :has(> [data-shell-overlay]) > *:nth-child(3) {",
+      "  :has(> [data-shell-overlay]) > [data-rightbar-col] {",
       "    display: flex !important;",
       "    flex-direction: column !important;",
       "    position: fixed !important;",
@@ -103,18 +109,18 @@ window.__ModuleLoader__.load({
       "    will-change: transform;",
       "    pointer-events: none !important;",
       "  }",
-      "  :has(> [data-shell-overlay]) > *:nth-child(3) > * {",
+      "  :has(> [data-shell-overlay]) > [data-rightbar-col] > * {",
       "    flex: 1 1 auto;",
       "    min-height: 0;",
       "  }",
-      "  :has(> [data-shell-overlay]) > *:nth-child(3) > * > [class*=\"_root\"] {",
+      "  :has(> [data-shell-overlay]) > [data-rightbar-col] > * > [class*=\"_root\"] {",
       "    border-left: none !important;",
       "  }",
-      "  :has(> [data-shell-overlay]) > *:nth-child(3) [class*=\"_close\"] {",
+      "  :has(> [data-shell-overlay]) > [data-rightbar-col] [class*=\"_close\"] {",
       "    width: 40px !important;",
       "    height: 40px !important;",
       "  }",
-      "  :has(> [data-shell-overlay]):not([data-details-collapsed]) > *:nth-child(3) {",
+      "  :has(> [data-shell-overlay]):not([data-rightbar-collapsed]) > [data-rightbar-col] {",
       "    transform: translateY(0) !important;",
       "    pointer-events: auto !important;",
       "  }",
@@ -500,10 +506,6 @@ window.__ModuleLoader__.load({
     var inject = ["slots", "layout", "timer"]
 
     function apply(ctx) {
-      try {
-        ctx.layout.closeDetails()
-      } catch (e) {}
-
       ctx.effect(function () {
         return ensureStyles()
       }, "ui-mobile: styles")

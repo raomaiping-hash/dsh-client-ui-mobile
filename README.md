@@ -20,14 +20,14 @@ The stock Web shell is a three-column desktop layout. Under a phone-width viewpo
 - **Safe areas & touch polish** — `env(safe-area-inset-*)`, 16&nbsp;px input font, `touch-action: manipulation`, denser composer spacing.
 - **Upgrade-resistant selectors** — targets stable attributes (`[role="dialog"][aria-modal="true"]:has(>nav)`, `[data-shell-overlay]`) and CSS-module local-name suffixes (`[class*="_options"]`) instead of hashed class names, so it survives DSH frontend rebuilds.
 
-> **Note on the details panel:** the stock harness does not yet wire an entry point that opens the details column (the upstream `openDetails` action is implemented but uncalled). The bottom-sheet CSS is correct and activates the moment an entry point exists; today it stays off-screen and harmless. The settings and drawer features are fully usable now.
+> **Note on the right sidebar:** 0.1.5 removed the details column and introduced the right sidebar. On phone widths this plugin docks that column (`[data-rightbar-col]`) as a bottom sheet, so the official right-sidebar toggle opens it over the chat instead of squeezing the conversation column. The settings and drawer features are fully usable now.
 
 ## Compatibility
 
-- Declared target: DSH `0.1.3-alpha.2` (`dshTarget` in `package.json`); previously declared `0.1.2-rc.1`.
-- The 0.1.2-rc.1 → 0.1.3-alpha.2 client API migration touched `connection` and `settings`; this plugin consumes neither. It only uses `ctx.slots`, `ctx.layout`, and the timer/effect verbs (`ctx.timeout`, `ctx.effect`), all verified present in the installed `0.1.3-alpha.2` runtime.
-- Selector audit against the installed `@deepseek-ai/dsh-client-ui-layout` and `@deepseek-ai/dsh-client-ui-settings-general` client bundles found every anchor this plugin relies on still present: `data-shell-overlay`, `data-sidebar-collapsed` / `data-details-collapsed`, the sidebar/center/details column order (grid children 1–3), `[data-cordis-panel]`, the settings sheet (`[role="dialog"][aria-modal="true"]:has(>nav)` plus `_nav*` / `_content` / `_header` / `_options` / `_close` CSS-module suffixes), the tool-row `inspectButton` local name, and the `--dsh-*` layout variables its rules override.
-- No code change was required for this release; the version bump is metadata-only. Visual behavior still needs a phone-width E2E pass on this exact version.
+- Declared target: DSH `0.1.5-alpha.1` (`dshTarget` in `package.json`); previously declared `0.1.3-alpha.2`.
+- 0.1.5 reworked the AppFrame: the details column is gone and the children are now sidebar / center / rightbar / overlay. Only the rightbar column carries a data attribute (`[data-rightbar-col]`, with `data-rightbar-collapsed` / `data-rightbar-fullscreen` / `data-rightbar-instant` on the frame); the center column has none, so it is matched by its CSS-module suffix `[class*="_centerCol"]`. The previous positional selectors (`*:nth-child(2)` / `*:nth-child(3)`) and the `data-details-collapsed` flag no longer exist.
+- `ctx.layout.closeDetails()` was removed upstream and its call was dropped; `ctx.slots`, `ctx.layout.toggleSidebar`, `ctx.timeout`, and `ctx.effect` were re-verified present in the installed `0.1.5-alpha.1` runtime.
+- Visual behavior still needs a phone-width E2E pass on this exact version.
 
 ## Install
 
