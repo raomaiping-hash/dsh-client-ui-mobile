@@ -24,9 +24,9 @@
 
 ## 兼容性
 
-- 声明目标：DSH `0.1.5-alpha.1`（`package.json` 的 `dshTarget`）；此前声明为 `0.1.3-alpha.2`。
+- 声明目标：DSH `0.1.5-rc.2`（`package.json` 的 `dshTarget`）；此前声明为 `0.1.3-alpha.2`。
 - 0.1.5 重构了 AppFrame：详情列被移除，子元素改为 sidebar / center / rightbar / overlay。只有右栏列带 data 属性（`[data-rightbar-col]`，折叠/全屏/即时态由 frame 上的 `data-rightbar-collapsed` / `data-rightbar-fullscreen` / `data-rightbar-instant` 记录）；中栏没有 data 属性，故用其 CSS-module 后缀 `[class*="_centerCol"]` 匹配。旧的位置选择器（`*:nth-child(2)` / `*:nth-child(3)`）与 `data-details-collapsed` 标记均已不存在。
-- 上游移除了 `ctx.layout.closeDetails()`，对应调用已删除；`ctx.slots`、`ctx.layout.toggleSidebar`、`ctx.timeout`、`ctx.effect` 已在本机 0.1.5-alpha.1 运行时重新核实在位。
+- 上游移除了 `ctx.layout.closeDetails()`，对应调用已删除；`ctx.slots`、`ctx.layout.toggleSidebar`、`ctx.timeout`、`ctx.effect` 已在本机 0.1.5-rc.2 运行时重新核实在位。
 - 视觉行为仍需在本版本上做手机宽度 E2E 复核。
 
 ## 安装

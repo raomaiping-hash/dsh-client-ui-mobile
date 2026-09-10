@@ -24,9 +24,9 @@ The stock Web shell is a three-column desktop layout. Under a phone-width viewpo
 
 ## Compatibility
 
-- Declared target: DSH `0.1.5-alpha.1` (`dshTarget` in `package.json`); previously declared `0.1.3-alpha.2`.
+- Declared target: DSH `0.1.5-rc.2` (`dshTarget` in `package.json`); previously declared `0.1.3-alpha.2`.
 - 0.1.5 reworked the AppFrame: the details column is gone and the children are now sidebar / center / rightbar / overlay. Only the rightbar column carries a data attribute (`[data-rightbar-col]`, with `data-rightbar-collapsed` / `data-rightbar-fullscreen` / `data-rightbar-instant` on the frame); the center column has none, so it is matched by its CSS-module suffix `[class*="_centerCol"]`. The previous positional selectors (`*:nth-child(2)` / `*:nth-child(3)`) and the `data-details-collapsed` flag no longer exist.
-- `ctx.layout.closeDetails()` was removed upstream and its call was dropped; `ctx.slots`, `ctx.layout.toggleSidebar`, `ctx.timeout`, and `ctx.effect` were re-verified present in the installed `0.1.5-alpha.1` runtime.
+- `ctx.layout.closeDetails()` was removed upstream and its call was dropped; `ctx.slots`, `ctx.layout.toggleSidebar`, `ctx.timeout`, and `ctx.effect` were re-verified present in the installed `0.1.5-rc.2` runtime.
 - Visual behavior still needs a phone-width E2E pass on this exact version.
 
 ## Install
